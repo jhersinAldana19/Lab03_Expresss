@@ -1,0 +1,64 @@
+<div class="container p-4" style="margin-top:70px;">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <!-- Alerta que se muestra y desaparece después de unos segundos -->
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="alerta-producto" style="display:none;">
+                Categoria agregado con éxito.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="card text-center">
+                <div class="card-header">
+                    <h3 class="text-uppercase">CREAR CATEGORIA</h3>
+                </div>
+                <div class="card-body">
+                    <form id="formAgregarProducto">
+                        <div class="input-group mt-2">
+                            <label for="name" class="input-group-text">Nombre</label>
+                            <input class="form-control" type="text" name="nomcli" id="nomcli" placeholder="Nombre" autofocus required>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label for="lastname" class="input-group-text">Descripcion</label>
+                            <input class="form-control" type="text" name="apecli" id="apecli" placeholder="Descripcion" required>
+                        </div>
+
+                        <div class="form-group mt-4 d-grid gap-2">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button class="btn btn-danger">
+                                <a class="nav-link link-light" aria-current="page" href="/categoria/list">Cancelar</a>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('formAgregarProducto').addEventListener('submit', function (event) {
+        event.preventDefault(); 
+        
+        fetch('/agregarProducto', {
+            method: 'POST',
+            body: new FormData(this),
+        })
+        .then(response => {
+            if (response.ok) {
+                mostrarAlerta(); 
+            }
+        })
+        .catch(error => console.error('Error al agregar el producto:', error));
+    });
+
+    function mostrarAlerta() {
+        
+        var alerta = document.getElementById("alerta-producto");
+        alerta.style.display = "block";
+        
+        setTimeout(function () {
+            alerta.style.display = "none";
+            window.location.href = "/categoria/list";
+        }, 1000);
+    }
+</script>
